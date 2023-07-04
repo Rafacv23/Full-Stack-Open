@@ -1,17 +1,12 @@
 import React from 'react';
 import Part from '../components/part';
 
-const Total = () => {
+const Total = ({course}) => {
     
-    const exercises1 = 10
-    const exercises2 = 7
-    const exercises3 = 14
-    const sumaExercises = exercises1 + exercises2 + exercises3
-    const text = "Number of exercises: " + sumaExercises
+    const sumaExercises = course.parts.reduce((total, part) => total + part.exercises, 0);
+    const text = "Número de ejercicios: " + sumaExercises;
 
-    return (
-        <Part text={text}></Part>
-    );
-}
+    return <Part text={text} />;
+};
 
 export default Total;
