@@ -60,7 +60,7 @@ function App() {
       </div>
       <Title name={"Stadistics"}></Title>
       <Display contadorGood={good} contadorNeutral={neutral} contadorBad={bad} 
-      contadorAll={all} contadorAverage={average} contadorPositive={positiveComments(good, all)}></Display>
+      contadorAll={all} contadorAverage={average} contadorPositive={all > 0 ? positiveComments(good, all) : "No hay datos disponibles"}></Display>
     </div>
   );
 }
