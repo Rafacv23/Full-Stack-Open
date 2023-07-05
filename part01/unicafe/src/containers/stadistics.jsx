@@ -11,14 +11,28 @@ const Stadistics = (props) => {
         }
       
         return (
-          <div>
-            <StadisticsLine text={"Buenos"} contador={props.contadorGood} />
-            <StadisticsLine text={"Neutrales"} contador={props.contadorNeutral} />
-            <StadisticsLine text={"Malos"} contador={props.contadorBad} />
-            <StadisticsLine text={"Total"} contador={props.contadorAll} />
-            <StadisticsLine text={"Promedio"} contador={props.contadorAverage} />
-            <StadisticsLine text={"Comentarios positivos"} contador={props.contadorPositive} />
-          </div>
+          <table>
+            <tbody>
+              <tr>
+                <StadisticsLine text={"Buenos"} contador={props.contadorGood} />
+              </tr>
+              <tr>
+                <StadisticsLine text={"Neutrales"} contador={props.contadorNeutral} />
+              </tr>
+              <tr>
+                <StadisticsLine text={"Malos"} contador={props.contadorBad} />
+              </tr>
+              <tr>
+                <StadisticsLine text={"Total"} contador={props.contadorAll} />
+              </tr>
+              <tr>
+                <StadisticsLine text={"Promedio"} contador={props.contadorAverage} />
+              </tr>
+              <tr>
+                <StadisticsLine text={"Comentarios positivos"} contador={props.contadorPositive} />
+              </tr>
+              </tbody>
+          </table>
         );
       };
 
