@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ReactBtn from "./components/react-btn";
 import Title from "./components/title";
-import Display from "./containers/display";
+import Statistics from "./containers/statistics";
 
 function App() {
 
@@ -59,8 +59,8 @@ function App() {
       <ReactBtn handleClick={updateBad} name={"Bad"}></ReactBtn>
       </div>
       <Title name={"Stadistics"}></Title>
-      <Display contadorGood={good} contadorNeutral={neutral} contadorBad={bad} 
-      contadorAll={all} contadorAverage={average} contadorPositive={all > 0 ? positiveComments(good, all) : "No hay datos disponibles"}></Display>
+      <Statistics contadorGood={good} contadorNeutral={neutral} contadorBad={bad} 
+      contadorAll={all} contadorAverage={average} contadorPositive={all > 0 ? positiveComments(good, all) : "No hay datos disponibles"}></Statistics>
     </div>
   );
 }
