@@ -25,11 +25,26 @@ function App() {
     setSelected(randomItem);
   };
 
+  const getMostVotedAnecdote = () => {
+    let maxVotes = -1;
+    let maxIndex = -1;
+    votes.forEach((vote, index) => {
+      if (vote > maxVotes) {
+        maxVotes = vote;
+        maxIndex = index;
+      }
+    })
+    return maxIndex;
+  };
+
+  const mostVotedIndex = getMostVotedAnecdote();
+
+
   return (
       <Display anecdote={selected === "" ? "Presiona el botón para comenzar" : anecdotes[selected]}
       value={votes[selected]}
       vote={voting}
-      random={randomise}/>
+      random={randomise}  mostVotedAnecdote={anecdotes[mostVotedIndex]}/>
   );
 }
 
