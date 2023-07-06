@@ -2,8 +2,6 @@ import { useState } from "react";
 import Display from "./containers/display.jsx"
 function App() {
 
-  let [selected, setSelected] = useState("")
-
   const anecdotes = [
     'If it hurts, do it more often',
     'Adding manpower to a late software project makes it later!',
@@ -13,15 +11,25 @@ function App() {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
   ]
 
+  const [selected, setSelected] = useState("")
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+
+  const voting = () => {
+    const newVotes = [...votes];
+    newVotes[selected] += 1;
+    setVotes(newVotes);
+  };
+
   const randomise = () => {
     const randomItem = Math.floor(Math.random() * anecdotes.length);
-    const randomValue = anecdotes[randomItem];
-    setSelected(randomValue);
-    console.log("Changing anecdote");
+    setSelected(randomItem);
   };
 
   return (
-      <Display anecdote={selected === "" ? "Press button to start" : selected} random={randomise}></Display>
+      <Display anecdote={selected === "" ? "Presiona el botón para comenzar" : anecdotes[selected]}
+      value={votes[selected]}
+      vote={voting}
+      random={randomise}/>
   );
 }
 
