@@ -1,0 +1,18 @@
+note over browser: El usuario abre la aplicación de notas en el navegador
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server-->browser: HTML-code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+note over browser: El navegador carga la página HTML y los archivos CSS y JavaScript asociados
+note over browser: La SPA se inicializa y renderiza la interfaz de usuario de la aplicación
+note over browser: El usuario ingresa el contenido de la nueva nota en un campo de texto
+note over browser: El usuario hace clic en el botón "Guardar" o "Crear nota"
+note over browser: La SPA captura el evento del botón y ejecuta una función de creación de nota
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+note over server: El servidor recibe la solicitud POST con los datos de la nueva nota
+server-->browser: 201 Created (respuesta exitosa del servidor)
+note over browser: La SPA recibe la respuesta exitosa y actualiza su estado interno de notas
+note over browser: La SPA renderiza nuevamente la lista de notas con la nueva nota agregada
+end note

@@ -1,0 +1,23 @@
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+note over browser: El navegador comienza a ejecutar el código JavaScript
+note over browser: El usuario escribe algo en el campo de texto
+note over browser: El usuario hace clic en el botón "submit"
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+note over server: El servidor recibe la solicitud POST con los datos de la nueva nota
+server-->browser: 302 Found (redirección a la página de notas)
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+note over browser: El navegador ejecuta el código JavaScript que solicita los datos JSON actualizados desde el servidor
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
+note over browser: El navegador ejecuta el controlador de eventos que renderiza las notas para mostrarlas
+end note
