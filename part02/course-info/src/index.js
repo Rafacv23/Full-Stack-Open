@@ -27,9 +27,24 @@ const App = () => {
 		]
 }
 
+const course2 = {
+	name: "Node.js",
+	parts: [
+		{
+		name: "Routing",
+		exercises: 3,
+		},
+		{
+		name: "Middlewares",
+		exercises: 7,
+		},
+	]
+}
+
 	return (
 		<div className="body">
 			<Course name={course.name} course={course} courseTotal={course}></Course>
+			<Course name={course2.name} course={course2} courseTotal={course2}></Course>
 		</div>
 	);
 };
