@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
+import Header from './components/header'
+import AddForm from './containers/add-form'
+import ContactDisplay from './containers/contact-display'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas' }
+    {  }
   ]) 
   const [ newPerson, setNewPerson ] = useState('')
 
@@ -22,19 +25,14 @@ const App = () => {
 
   return (
     <div className='body'>
-      <h2>Phonebook</h2>
-      <form onSubmit={addPerson} >
-        <div>
-          name: <input value={newPerson} onChange={createPerson} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {persons.map((person) => (
-        <div key={person.id}> {person.name} </div>
-      ))}
+      <Header name={"Phonebook"}></Header>
+        <AddForm onSubmit={addPerson} value={newPerson} onChange={createPerson}></AddForm>
+      <Header name={"Contacts"}></Header>
+      <ContactDisplay array={persons}>
+        {persons.map((person) => (
+          <div key={person.id}>{person.name}</div>
+        ))}
+      </ContactDisplay>
     </div>
   )
 }
