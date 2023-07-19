@@ -23,6 +23,10 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const convertString = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
 
@@ -31,12 +35,12 @@ const App = () => {
     const numberLength = newNumber.length === 9
 
     if (personExists || numberExists) {
-      alert("Error: Person or number already. Try with other data.");
+      alert("Error: Person or number already exists. Try with other data.");
     } else if (!numberLength) {
       alert("Error: Number length must be 9 characters.");
     } else {
       const person = {
-        name: newPerson.charAt(0).toUpperCase() + newPerson.slice(1),
+        name: convertString(newPerson),
         id: persons.length + 1,
         number: newNumber
       };
@@ -46,9 +50,9 @@ const App = () => {
 
   const createSearchPerson = (event) => {
     const searchTerm = event.target.value
-    const filteredSearchTerm = searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1)
-    setSearchPerson(filteredSearchTerm)
-    filterPerson(filteredSearchTerm)
+    const alterSearchTerm = convertString(searchTerm)
+    setSearchPerson(alterSearchTerm)
+    filterPerson(alterSearchTerm)
   }
 
   const filterPerson = (searchTerm) => {
