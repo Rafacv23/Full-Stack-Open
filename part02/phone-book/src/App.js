@@ -16,12 +16,19 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const person = {
-      name: newPerson,
-      id: persons.length + 1,
-    }
+
+    const personExists = persons.some((person) => person.name === newPerson)
+
+    if (personExists){
+      alert("Error: Person already exists. Try with other name.")
+    } else {
+      const person = {
+        name: newPerson,
+        id: persons.length + 1,
+      }
       setPersons(persons.concat(person))
     }
+  }
 
   return (
     <div className='body'>
