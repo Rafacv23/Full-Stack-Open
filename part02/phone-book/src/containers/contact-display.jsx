@@ -4,7 +4,7 @@ const ContactDisplay = ({array}) => {
     return (
         <div>
             {array.map((arrayObject) => (
-                <p key={arrayObject.id}> {arrayObject.name} </p>
+                <p key={arrayObject.id}> {arrayObject.name} {arrayObject.number}</p>
             ))}
         </div>
     );

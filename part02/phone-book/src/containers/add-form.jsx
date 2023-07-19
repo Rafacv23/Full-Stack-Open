@@ -6,6 +6,7 @@ const AddForm = (props) => {
     return (
         <form onSubmit={props.onSubmit}>
             <Input value={props.value} onChange={props.onChange} placeholder={"Name"}></Input>
+            <Input value={props.valueNumber} onChange={props.onChangeNumber} placeholder={"Number"}></Input>
             <Button name={"Add"} type={"submit"}></Button>
         </form>
     );
