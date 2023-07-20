@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react'
 import SearchInput from './components/search-input';
 import Title from './components/title';
 import axios from 'axios'
-import CountryList from './containers/country-list';
-import Text from './components/text';
+import CountryDetails from './components/country-details';
 
 function App() {
   const [searchedCountry, setSearchedCountry] = useState("");
@@ -37,18 +36,20 @@ function App() {
     <div className="App">
       <Title name={"Find Countries"} ></Title>
       <SearchInput type={"text"} onChange={search} value={searchedCountry} placeholder={"Type some country"}></SearchInput>
-      <CountryList array={filteredCountries.length > 0 ? filteredCountries : []}>
-        {filteredCountries.length === 0 ? (
-          <Text name={"Please type any country to start the search"}></Text>
-        ) : filteredCountries.length < 10 ? 
-        <Text name={"Too many results, please be more specific"}></Text> : 
-        ((
-            filteredCountries.map((country) => (
-            <div key={country.name}>{country.name}</div>
-          ))
-        )
-        )}
-      </CountryList>
+
+      {filteredCountries.length === 0 && <p>No countries found.</p>}
+      {filteredCountries.length > 10  && <p>Please enter a more specific query.</p>}
+
+      {filteredCountries.length < 10 && filteredCountries.length > 1 && (
+        <ul>
+          {filteredCountries.map((country) => (
+            <li key={country.name}> {country.name} </li>
+          ))}
+        </ul>
+      )}
+
+      {filteredCountries.length === 1 && <CountryDetails country={filteredCountries[0]} ></CountryDetails>}
+
     </div>
   );
 }
