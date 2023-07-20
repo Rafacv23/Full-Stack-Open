@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './components/header'
 import AddForm from './containers/add-form'
 import ContactDisplay from './containers/contact-display'
 import Input from './components/input'
+import axios from 'axios'
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -12,6 +13,12 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchPerson, setSearchPerson ] = useState('')
   const [ filteredPersons, setFilteredPersons ] = useState('')
+
+  useEffect (() => {
+    axios.get("http://localhost:3001/persons").then((response) => {
+    console.log("Data added from json server")
+    setPersons(response.data)
+  })}, [])
 
   const createPerson = (event) => {
     console.log(event.target.value)
@@ -75,5 +82,4 @@ const App = () => {
     </div>
   )
 }
-
 export default App
