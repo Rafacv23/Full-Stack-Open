@@ -11,6 +11,8 @@ function App() {
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState(null)
+  const [weather, setWeather] = useState(null)
+  const [showWeather, setShowWeather] = useState(false)
 
   const recoverCountry = () => {
       axios.get("https://restcountries.com/v2/all").then((response) => {
@@ -18,8 +20,30 @@ function App() {
       setCountries(response.data)
   })
 }
+    
+    
+    
+  const getWeatherData = (capital, weather) => {
+    const apiKey = "a3d7a050ee974e2706fc40a69d02a3c1";
+    axios.get(`http://api.weatherstack.com/current?access_key=${apiKey}&query=${capital}`)
+      .then((response) => {
+        console.log("Weather data recovered", response.data.current);
+    setWeather(response.data.current);
+    if (response.data.current) {
+      setWeather(response.data.current);
+    } else {
+      setWeather(null);}
+      })
+      .catch((error) => {
+        console.error("Error fetching weather data:", error);
+        setWeather(null)
+      });
+  };
 
-  useEffect (recoverCountry, [])
+  useEffect(() => {
+    recoverCountry();
+    getWeatherData();
+  }, [])
 
   const search = (event) => {
     const result = event.target.value
@@ -36,6 +60,23 @@ function App() {
 
   const showInfo = (country) => {
     setSelectedCountry(country)
+    getWeatherData(country.capital)
+    console.log("capital", country.capital)
+  }
+
+  const toggleWeatherInfo = (country) => {
+    if (showWeather) {
+      setShowWeather(false);
+    } else {
+      getWeatherData(country.capital);
+      setShowWeather(true);
+    }
+    console.log("capital", country.capital);
+  };
+
+  const hideInfo = () => {
+    setSelectedCountry(null)
+    setShowWeather(false)
   }
 
   return (
@@ -49,15 +90,26 @@ function App() {
       {filteredCountries.length < 10 && filteredCountries.length > 1 && (
         <ul>
           {filteredCountries.map((country) => (
-            <>
-              <li key={country.name}> {country.name} </li> <ShowBtn handleClick={() => showInfo(country)} name={"Show"}></ShowBtn>
-            </>
+            <li key={country.name}>
+              {country.name}{' '}
+              {selectedCountry === country ? (
+                <ShowBtn handleClick={hideInfo} name={'Hide'}></ShowBtn>
+              ) : (
+                <ShowBtn handleClick={() => showInfo(country)} name={'Show'}></ShowBtn>
+              )}
+            </li>
           ))}
         </ul>
       )}
 
-      {filteredCountries.length === 1 && <CountryDetails country={filteredCountries[0]} ></CountryDetails>}
-      {selectedCountry && <CountryDetails country={selectedCountry} />}
+      {filteredCountries.length === 1 && 
+      <>
+        <CountryDetails country={filteredCountries[0]} weather={weather}></CountryDetails> 
+        {showWeather ? 
+        ("") :
+        (<ShowBtn name={"Weather info"} handleClick={()=> toggleWeatherInfo(filteredCountries[0])}></ShowBtn> )}
+      </>}
+      {selectedCountry && <CountryDetails country={selectedCountry} weather={weather} />}
 
     </div>
   );
