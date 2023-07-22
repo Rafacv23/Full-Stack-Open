@@ -4,11 +4,13 @@ import SearchInput from './components/search-input';
 import Title from './components/title';
 import axios from 'axios'
 import CountryDetails from './components/country-details';
+import ShowBtn from './components/show-btn';
 
 function App() {
   const [searchedCountry, setSearchedCountry] = useState("");
   const [countries, setCountries] = useState([])
   const [filteredCountries, setFilteredCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
   const recoverCountry = () => {
       axios.get("https://restcountries.com/v2/all").then((response) => {
@@ -32,6 +34,10 @@ function App() {
     setFilteredCountries(filter)
   }
 
+  const showInfo = (country) => {
+    setSelectedCountry(country)
+  }
+
   return (
     <div className="App">
       <Title name={"Find Countries"} ></Title>
@@ -43,12 +49,15 @@ function App() {
       {filteredCountries.length < 10 && filteredCountries.length > 1 && (
         <ul>
           {filteredCountries.map((country) => (
-            <li key={country.name}> {country.name} </li>
+            <>
+              <li key={country.name}> {country.name} </li> <ShowBtn handleClick={() => showInfo(country)} name={"Show"}></ShowBtn>
+            </>
           ))}
         </ul>
       )}
 
       {filteredCountries.length === 1 && <CountryDetails country={filteredCountries[0]} ></CountryDetails>}
+      {selectedCountry && <CountryDetails country={selectedCountry} />}
 
     </div>
   );
