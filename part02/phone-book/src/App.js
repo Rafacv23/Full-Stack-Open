@@ -4,6 +4,7 @@ import AddForm from './containers/add-form'
 import ContactDisplay from './containers/contact-display'
 import Input from './components/input'
 import personService from "./services/personService"
+import Notification from "./containers/notification"
 
 const App = () => {
   const [ persons, setPersons ] = useState([{}]) 
@@ -11,6 +12,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchPerson, setSearchPerson ] = useState('')
   const [ filteredPersons, setFilteredPersons ] = useState('')
+  const [ notification, setNotification ] = useState(false)
 
   useEffect (() => {
     personService
@@ -51,6 +53,10 @@ const App = () => {
             setNewPerson("");
             setNewNumber("");
             console.log("Person number updated in the database");
+            setNotification(true)
+            setTimeout(() => {
+              setNotification(false)
+            }, 5000)
           })
           .catch((error) => {
             console.warn("Error updating person number: " + error);
@@ -66,6 +72,10 @@ const App = () => {
             setPersons(persons.concat(response.data));
             setNewPerson("");
             setNewNumber("");
+            setNotification(true)
+            setTimeout(() => {
+              setNotification(false)
+            }, 5000)
             console.log("Person added to the database");
           });
       }
@@ -104,6 +114,7 @@ const App = () => {
     <div className='body'>
       <Header name={"Phonebook"}></Header>
         <AddForm onSubmit={addPerson} value={newPerson} onChange={createPerson} valueNumber={newNumber} onChangeNumber={createNumber}></AddForm>
+        {notification ? <Notification className="notification-success" text="Success"></Notification> : null}
       <Header name={"Contacts"}></Header>
       <Input value={searchPerson} onChange={createSearchPerson} placeholder={"Search"}></Input>
       <ContactDisplay removePerson={removePerson} array={filteredPersons.length > 0 ? filteredPersons : persons}>
