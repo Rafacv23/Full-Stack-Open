@@ -38,24 +38,18 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const personExists = persons.some((person) => person.name === newPerson);
-    const numberExists = persons.some((person) => person.number === newNumber);
+    const personExists = persons.find((person) => person.name === newPerson);
     const numberLength = newNumber.length === 9;
-
+  
     if (personExists) {
       if (!numberLength) {
         alert("Error: Number length must be 9 characters.");
       } else {
-        const updatedPersons = persons.map((person) => {
-          if (person.name === newPerson) {
-            return { ...person, number: newNumber };
-          }
-          return person;
-        });
+        const updatedPerson = { ...personExists, number: newNumber };
         if(window.confirm("Are you sure you want to change the number of this person?"))
-        personService.create({ name: newPerson, number: newNumber })
+        personService.update(personExists.id, updatedPerson)
           .then(() => {
-            setPersons(updatedPersons);
+            setPersons(persons.map((person) => (person.id === personExists.id ? updatedPerson : person)));
             setNewPerson("");
             setNewNumber("");
             console.log("Person number updated in the database");
@@ -64,19 +58,19 @@ const App = () => {
             console.warn("Error updating person number: " + error);
           });
       }
-    } else if (numberExists) {
-      alert("Error: Person with this number already exists. Try with other data.");
-    } else if (!numberLength) {
-      alert("Error: Number length must be 9 characters.");
     } else {
-      const person = { name: convertString(newPerson), number: newNumber };
-      personService.create(person)
-        .then((response) => {
-          setPersons(persons.concat(response.data));
-          setNewPerson("");
-          setNewNumber("");
-          console.log("Person added to the database");
-        });
+      if (!numberLength) {
+        alert("Error: Number length must be 9 characters.");
+      } else {
+        const person = { name: convertString(newPerson), number: newNumber };
+        personService.create(person)
+          .then((response) => {
+            setPersons(persons.concat(response.data));
+            setNewPerson("");
+            setNewNumber("");
+            console.log("Person added to the database");
+          });
+      }
     }
   };
 
