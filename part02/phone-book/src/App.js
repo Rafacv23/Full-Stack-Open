@@ -76,13 +76,29 @@ const App = () => {
     setFilteredPersons(filtered);
   }
 
+  const removePerson = (person) => {
+
+    if(window.confirm("Are you sure you want to remove?"))
+    personService
+      .remove(person.id)
+      .then(() => {
+        setPersons(persons.filter((p) => p.id !== person.id))
+        console.log("Person removed from the database")
+      })
+    
+
+      .catch((error) => {
+        console.warn("Error removing person: " + error)
+      })
+  }
+
   return (
     <div className='body'>
       <Header name={"Phonebook"}></Header>
         <AddForm onSubmit={addPerson} value={newPerson} onChange={createPerson} valueNumber={newNumber} onChangeNumber={createNumber}></AddForm>
       <Header name={"Contacts"}></Header>
       <Input value={searchPerson} onChange={createSearchPerson} placeholder={"Search"}></Input>
-      <ContactDisplay array={filteredPersons.length > 0 ? filteredPersons : persons}>
+      <ContactDisplay removePerson={removePerson} array={filteredPersons.length > 0 ? filteredPersons : persons}>
         {filteredPersons.length > 0
           ? filteredPersons.map((person) => <div key={person.id}>{person.name}</div>)
           : persons.map((person) => <div key={person.id}>{person.name}</div>)}
