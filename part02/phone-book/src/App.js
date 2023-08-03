@@ -24,7 +24,7 @@ const App = () => {
 
   const createPerson = (event) => {
     const person = event.target.value
-    setNewPerson(person)
+    setNewPerson(convertString(person))
   }
 
   const createNumber = (event) => {
@@ -37,31 +37,48 @@ const App = () => {
   }
 
   const addPerson = (event) => {
-    event.preventDefault()
+    event.preventDefault();
+    const personExists = persons.some((person) => person.name === newPerson);
+    const numberExists = persons.some((person) => person.number === newNumber);
+    const numberLength = newNumber.length === 9;
 
-    const personExists = persons.some((person) => person.name === newPerson)
-    const numberExists = persons.some((person) => person.number === newNumber)
-    const numberLength = newNumber.length === 9
-
-    if (personExists || numberExists) {
-      alert("Error: Person or number already exists. Try with other data.");
+    if (personExists) {
+      if (!numberLength) {
+        alert("Error: Number length must be 9 characters.");
+      } else {
+        const updatedPersons = persons.map((person) => {
+          if (person.name === newPerson) {
+            return { ...person, number: newNumber };
+          }
+          return person;
+        });
+        if(window.confirm("Are you sure you want to change the number of this person?"))
+        personService.create({ name: newPerson, number: newNumber })
+          .then(() => {
+            setPersons(updatedPersons);
+            setNewPerson("");
+            setNewNumber("");
+            console.log("Person number updated in the database");
+          })
+          .catch((error) => {
+            console.warn("Error updating person number: " + error);
+          });
+      }
+    } else if (numberExists) {
+      alert("Error: Person with this number already exists. Try with other data.");
     } else if (!numberLength) {
       alert("Error: Number length must be 9 characters.");
     } else {
-      const person = {
-        name: convertString(newPerson),
-        number: newNumber
-      };
-
-      personService
-        .create(person)
+      const person = { name: convertString(newPerson), number: newNumber };
+      personService.create(person)
         .then((response) => {
-          setPersons(persons.concat(response.data))
-          setNewPerson("")
-          console.log("Person added to the database")
-      })
+          setPersons(persons.concat(response.data));
+          setNewPerson("");
+          setNewNumber("");
+          console.log("Person added to the database");
+        });
     }
-  }
+  };
 
   const createSearchPerson = (event) => {
     const searchTerm = event.target.value
@@ -85,7 +102,6 @@ const App = () => {
         setPersons(persons.filter((p) => p.id !== person.id))
         console.log("Person removed from the database")
       })
-    
 
       .catch((error) => {
         console.warn("Error removing person: " + error)
