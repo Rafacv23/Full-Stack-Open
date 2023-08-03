@@ -3,7 +3,7 @@ import Header from './components/header'
 import AddForm from './containers/add-form'
 import ContactDisplay from './containers/contact-display'
 import Input from './components/input'
-import axios from 'axios'
+import personService from "./services/personService"
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -15,19 +15,21 @@ const App = () => {
   const [ filteredPersons, setFilteredPersons ] = useState('')
 
   useEffect (() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-    console.log("Data added from json server")
-    setPersons(response.data)
+    personService
+      .getAll()
+      .then(response => {
+        setPersons(response.data)
+        console.log("Data added from json server")
   })}, [])
 
   const createPerson = (event) => {
-    console.log(event.target.value)
-    setNewPerson(event.target.value)
+    const person = event.target.value
+    setNewPerson(person)
   }
 
   const createNumber = (event) => {
-    console.log(event.target.value);
-    setNewNumber(event.target.value)
+    const number = event.target.value
+    setNewNumber(number)
   }
 
   const convertString = (string) => {
@@ -50,9 +52,13 @@ const App = () => {
         name: convertString(newPerson),
         number: newNumber
       };
-      axios.post("http://localhost:3001/persons", person).then((response) => {
-        setPersons(persons.concat(response.data))
-        setNewPerson("")
+
+      personService
+        .create(person)
+        .then((response) => {
+          setPersons(persons.concat(response.data))
+          setNewPerson("")
+          console.log("Person added to the database")
       })
     }
   }
