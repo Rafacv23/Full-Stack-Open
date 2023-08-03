@@ -48,10 +48,12 @@ const App = () => {
     } else {
       const person = {
         name: convertString(newPerson),
-        id: persons.length + 1,
         number: newNumber
       };
-      setPersons(persons.concat(person))
+      axios.post("http://localhost:3001/persons", person).then((response) => {
+        setPersons(persons.concat(response.data))
+        setNewPerson("")
+      })
     }
   }
 

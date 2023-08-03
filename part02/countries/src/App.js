@@ -21,9 +21,7 @@ function App() {
   })
 }
     
-    
-    
-  const getWeatherData = (capital, weather) => {
+  const getWeatherData = (capital) => {
     const apiKey = "a3d7a050ee974e2706fc40a69d02a3c1";
     axios.get(`http://api.weatherstack.com/current?access_key=${apiKey}&query=${capital}`)
       .then((response) => {
@@ -110,7 +108,6 @@ function App() {
         (<ShowBtn name={"Weather info"} handleClick={()=> toggleWeatherInfo(filteredCountries[0])}></ShowBtn> )}
       </>}
       {selectedCountry && <CountryDetails country={selectedCountry} weather={weather} />}
-
     </div>
   );
 }
