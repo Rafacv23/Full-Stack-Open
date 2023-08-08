@@ -37,6 +37,26 @@ app.delete("/api/persons/:id", (request, response) => {
     }
 })
 
+app.use(express.json());
+
+app.post("/api/persons", (request, response) => {
+    const body = request.body;
+    
+    if (!body.name || !body.number) {
+        return response.status(400).json({ error: "Name or number is missing" });
+    }
+
+    const id = Math.floor(Math.random() * 1000) + 1;
+    const newPerson = {
+        id: id,
+        name: body.name,
+        number: body.number,
+    };
+
+    contact.push(newPerson);
+    response.status(201).json(newPerson);
+});
+
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
