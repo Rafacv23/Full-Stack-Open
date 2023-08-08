@@ -41,9 +41,12 @@ app.use(express.json());
 
 app.post("/api/persons", (request, response) => {
     const body = request.body;
-    
-    if (!body.name || !body.number) {
+    const existingContact = contact.find((c) => c.name === body.name);
+
+    if (!body.name || !body.number){
         return response.status(400).json({ error: "Name or number is missing" });
+    } else if (existingContact){
+        return response.status(400).json({ error: "Contact already exists" })
     }
 
     const id = Math.floor(Math.random() * 1000) + 1;
