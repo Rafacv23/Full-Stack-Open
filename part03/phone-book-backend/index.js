@@ -3,6 +3,9 @@ const app = express();
 const { contact, getNumberContacts } = require("./contacts");
 const getDate = require("./date")
 const morgan = require('morgan')
+const cors = require('cors')
+
+app.use(cors())
 
 morgan.token('req-body', (req, res) => {
     if (req.method === 'POST') {
@@ -70,7 +73,7 @@ app.post("/api/persons", (request, response) => {
     response.status(201).json(newPerson);
 });
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
