@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "builds": [
+        { "src": "phone-book-frontend/build/**", "use": "@vercel/static" },
+        { "src": "phone-book-backend/**", "use": "@vercel/node" }
+    ],
+    "routes": [
+        { "src": "/api/(.*)", "dest": "phone-book-backend/$1" },
+        { "src": "/(.*)", "dest": "phone-book-frontend/build/$1" }
+    ]
+}
