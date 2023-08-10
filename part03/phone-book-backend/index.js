@@ -2,6 +2,16 @@ const express = require("express");
 const app = express();
 const { contact, getNumberContacts } = require("./contacts");
 const getDate = require("./date")
+const morgan = require('morgan')
+
+morgan.token('req-body', (req, res) => {
+    if (req.method === 'POST') {
+        return JSON.stringify(req.body);
+    }
+    return '';
+});
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :req-body'));
 
 app.get("/", (request, response) => {
     response.send("<h1>Notes</h1>")
